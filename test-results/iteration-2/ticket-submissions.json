@@ -1,0 +1,177 @@
+[
+  {
+    "timestamp": "2026-08-31T08:12:44Z",
+    "scenario": "valid-submission-low",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Retail Banking",
+      "category": "Hardware",
+      "priority": "Low",
+      "subject": "Iteration 2 - Low priority test",
+      "description": "This is a valid test description for iteration two low priority scenario.",
+      "confirmAccurate": true,
+      "captchaQuestion": "10 + 7 = ?",
+      "captchaAnswer": "17"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-7930",
+    "priorityShown": "Low",
+    "slaShown": "3 business days",
+    "notes": "No console errors besides benign favicon 404."
+  },
+  {
+    "timestamp": "2026-08-31T08:13:25Z",
+    "scenario": "valid-submission-medium",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Corporate Banking",
+      "category": "Software / Application",
+      "priority": "Medium",
+      "subject": "Iteration 2 - Medium priority test",
+      "description": "This is a valid test description for iteration two medium priority scenario.",
+      "confirmAccurate": true,
+      "captchaQuestion": "2 + 2 = ?",
+      "captchaAnswer": "4"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-8110",
+    "priorityShown": "Medium",
+    "slaShown": "1 business day",
+    "notes": "No console errors besides benign favicon 404."
+  },
+  {
+    "timestamp": "2026-08-31T08:14:19Z",
+    "scenario": "valid-submission-high",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Treasury",
+      "category": "Network & VPN",
+      "priority": "High",
+      "subject": "Iteration 2 - High priority test",
+      "description": "This is a valid test description for iteration two high priority scenario.",
+      "confirmAccurate": true,
+      "captchaQuestion": "3 + 7 = ?",
+      "captchaAnswer": "10"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-4039",
+    "priorityShown": "High",
+    "slaShown": "4 hours",
+    "notes": "No console errors besides benign favicon 404."
+  },
+  {
+    "timestamp": "2026-08-31T08:14:56Z",
+    "scenario": "valid-submission-critical",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Security Incident",
+      "priority": "Critical",
+      "subject": "Iteration 2 - Critical priority test",
+      "description": "This is a valid test description for iteration two critical priority scenario.",
+      "confirmAccurate": true,
+      "captchaQuestion": "6 + 3 = ?",
+      "captchaAnswer": "9"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-3867",
+    "priorityShown": "Critical",
+    "slaShown": "1 hour",
+    "notes": "No console errors besides benign favicon 404."
+  },
+  {
+    "timestamp": "2026-08-31T08:15:15Z",
+    "scenario": "blank-required-fields",
+    "input": {
+      "fullName": "",
+      "staffId": "",
+      "email": "",
+      "department": "",
+      "category": "",
+      "priority": "",
+      "subject": "",
+      "description": "",
+      "confirmAccurate": false,
+      "captchaAnswer": ""
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "All required fields (fullName, staffId, email, department, category, priority, subject, description, confirmAccurate, captchaAnswer) showed inline error messages and aria-invalid=true, confirmed via browser_evaluate direct DOM read. Focus landed on #fullName (first invalid field). Submission correctly blocked; success panel not shown."
+  },
+  {
+    "timestamp": "2026-08-31T08:15:54Z",
+    "scenario": "credential-warning-trigger",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Operations",
+      "category": "Account & Access",
+      "priority": "Medium",
+      "subject": "Iteration 2 - Credential warning test",
+      "description": "Cannot log in to my account, my password is hunter2 and it is not working.",
+      "confirmAccurate": true,
+      "captchaQuestion": "9 + 6 = ?",
+      "captchaAnswer": "15"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Credential warning banner (#credentialWarning) appeared with text about not sharing passwords/OTPs/card numbers; submission blocked (success panel not shown). Verified via browser_evaluate direct DOM read."
+  },
+  {
+    "timestamp": "2026-08-31T08:16:30Z",
+    "scenario": "wrong-captcha-answer",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Human Resources",
+      "category": "Other",
+      "priority": "Low",
+      "subject": "Iteration 2 - Wrong captcha test",
+      "description": "This is a valid test description used to test the wrong captcha scenario.",
+      "confirmAccurate": true,
+      "captchaQuestion": "2 + 3 = ?",
+      "captchaAnswer": "99"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Wrong-answer error message '#err-captchaAnswer' appeared ('That answer isn't correct. Try the new question below.') and submission was blocked. On the first wrong attempt the regenerated captcha question happened to land on the identical expression ('2 + 3 = ?' again) purely by random chance (small operand range); a follow-up resubmission with another wrong answer regenerated to a visibly different question ('6 + 3 = ?'), confirming the regeneration logic itself works correctly. Not flagged as a defect."
+  },
+  {
+    "timestamp": "2026-08-31T08:17:24Z",
+    "scenario": "bad-staffid-bad-email",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "12AB56",
+      "email": "test@gmail.com",
+      "department": "Risk & Compliance",
+      "category": "Email & Collaboration",
+      "priority": "Low",
+      "subject": "Iteration 2 - Bad staff ID and email test",
+      "description": "This is a valid test description used to test bad staff ID and email format.",
+      "confirmAccurate": true,
+      "captchaQuestion": "7 + 1 = ?",
+      "captchaAnswer": "8"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Staff ID error 'Staff ID must be exactly 6 digits.' and email error 'Email must be a valid @uobgroup.com address.' both fired with aria-invalid=true; submission blocked. Verified via browser_evaluate direct DOM read."
+  }
+]
