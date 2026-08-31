@@ -775,6 +775,181 @@
     font-weight: 600;
   }
 
+  /* ===== WhatsApp chat widget ===== */
+  .whatsapp-widget {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 500;
+  }
+
+  .whatsapp-fab {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-hover);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .whatsapp-fab:hover {
+    transform: scale(1.06);
+  }
+
+  .whatsapp-fab svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .whatsapp-panel {
+    position: absolute;
+    bottom: 72px;
+    right: 0;
+    width: 300px;
+    max-width: calc(100vw - 40px);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-hover);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .whatsapp-panel.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .whatsapp-panel-header {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--ink) 100%);
+    color: #fff;
+    padding: 16px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .whatsapp-panel-header svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #25D366;
+  }
+
+  .whatsapp-panel-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  .whatsapp-panel-subtitle {
+    font-size: 0.78rem;
+    color: #CBD5E1;
+    margin: 2px 0 0;
+  }
+
+  .whatsapp-panel-close {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+
+  .whatsapp-panel-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .whatsapp-panel-body {
+    padding: 14px 16px 4px;
+  }
+
+  .whatsapp-panel-hint {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin: 0 0 10px;
+  }
+
+  .whatsapp-suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .whatsapp-suggestion {
+    display: block;
+    text-align: left;
+    width: 100%;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 0.83rem;
+    font-family: inherit;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .whatsapp-suggestion:hover {
+    background: #fff;
+    border-color: var(--accent);
+  }
+
+  .whatsapp-panel-footer {
+    padding: 12px 16px 16px;
+  }
+
+  .whatsapp-start-chat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 11px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .whatsapp-start-chat:hover {
+    background: #1EBE5A;
+  }
+
+  @media (max-width: 480px) {
+    .whatsapp-widget {
+      right: 14px;
+      bottom: 14px;
+    }
+    .whatsapp-panel {
+      width: calc(100vw - 28px);
+    }
+  }
+
   /* ===== Responsive ===== */
   @media (max-width: 768px) {
     .nav-toggle {
@@ -1096,6 +1271,45 @@
   </div>
 </footer>
 
+<!-- ===== WHATSAPP CHAT WIDGET ===== -->
+<div class="whatsapp-widget">
+  <div class="whatsapp-panel" id="whatsappPanel">
+    <div class="whatsapp-panel-header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+      </svg>
+      <div>
+        <p class="whatsapp-panel-title">Chat with IT Service Desk</p>
+        <p class="whatsapp-panel-subtitle">Usually replies within a few minutes</p>
+      </div>
+      <button type="button" class="whatsapp-panel-close" id="whatsappClose" aria-label="Close chat widget">&#10005;</button>
+    </div>
+    <div class="whatsapp-panel-body">
+      <p class="whatsapp-panel-hint">Pick a topic to start on WhatsApp, or send your own message:</p>
+      <ul class="whatsapp-suggestions" id="whatsappSuggestions">
+        <li><a class="whatsapp-suggestion" data-message="Hi, I need help resetting my network password.">Reset my network password</a></li>
+        <li><a class="whatsapp-suggestion" data-message="Hi, I can't connect to the corporate VPN from home.">I can't connect to the VPN</a></li>
+        <li><a class="whatsapp-suggestion" data-message="Hi, I'd like to report a suspicious email.">Report a suspicious email</a></li>
+        <li><a class="whatsapp-suggestion" data-message="Hi, can you check the status of my existing ticket?">Check my ticket status</a></li>
+        <li><a class="whatsapp-suggestion" data-message="Hi, I'd like to request a new software installation.">Request software installation</a></li>
+      </ul>
+    </div>
+    <div class="whatsapp-panel-footer">
+      <a class="whatsapp-start-chat" id="whatsappStartChat" data-message="Hi, I need help with an IT issue.">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+        </svg>
+        Start a chat
+      </a>
+    </div>
+  </div>
+  <button type="button" class="whatsapp-fab" id="whatsappToggle" aria-haspopup="true" aria-expanded="false" aria-controls="whatsappPanel" aria-label="Chat with IT Service Desk on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+  </button>
+</div>
+
 <script>
 (function () {
   "use strict";
@@ -1111,6 +1325,51 @@
     if (e.target.tagName === 'A' && window.innerWidth <= 768) {
       navLinks.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* ===== WhatsApp chat widget ===== */
+  var WHATSAPP_NUMBER = '6591234567'; // +65 9123 4567, digits only (wa.me format)
+  var whatsappToggle = document.getElementById('whatsappToggle');
+  var whatsappPanel = document.getElementById('whatsappPanel');
+  var whatsappClose = document.getElementById('whatsappClose');
+
+  function whatsappLink(message) {
+    return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
+  }
+
+  document.querySelectorAll('.whatsapp-suggestion, #whatsappStartChat').forEach(function (el) {
+    el.setAttribute('href', whatsappLink(el.getAttribute('data-message')));
+    el.setAttribute('target', '_blank');
+    el.setAttribute('rel', 'noopener noreferrer');
+  });
+
+  function setWhatsappPanel(open) {
+    whatsappPanel.classList.toggle('open', open);
+    whatsappToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  whatsappToggle.addEventListener('click', function () {
+    setWhatsappPanel(!whatsappPanel.classList.contains('open'));
+  });
+
+  whatsappClose.addEventListener('click', function () {
+    setWhatsappPanel(false);
+    whatsappToggle.focus();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && whatsappPanel.classList.contains('open')) {
+      setWhatsappPanel(false);
+      whatsappToggle.focus();
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (whatsappPanel.classList.contains('open') &&
+        !whatsappPanel.contains(e.target) &&
+        !whatsappToggle.contains(e.target)) {
+      setWhatsappPanel(false);
     }
   });
 
