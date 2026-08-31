@@ -1,0 +1,16 @@
+# Secrets / credentials — never commit real values
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+id_rsa*
+*.p12
+*.pfx
+
+# Tooling artifacts
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
