@@ -1,0 +1,177 @@
+[
+  {
+    "timestamp": "2026-08-31T08:04:07Z",
+    "scenario": "valid-submission-low",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Hardware",
+      "priority": "Low",
+      "subject": "Laptop screen flickering intermittently",
+      "description": "My laptop screen has been flickering on and off for the past two days, especially when I open multiple applications.",
+      "confirmAccurate": true,
+      "captchaQuestion": "1 + 7 = ?",
+      "captchaAnswer": "8"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-6866",
+    "priorityShown": "Low",
+    "slaShown": "3 business days",
+    "notes": "Ticket ref format matched UOB-ITSD-YYYYMMDD-####; priority and SLA matched the site's own mapping. Only console message was a benign favicon.ico 404, no JS errors."
+  },
+  {
+    "timestamp": "2026-08-31T08:04:53Z",
+    "scenario": "valid-submission-medium",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Software / Application",
+      "priority": "Medium",
+      "subject": "Application crashes on login",
+      "description": "The CRM application crashes every time I try to log in after the recent update was installed.",
+      "confirmAccurate": true,
+      "captchaQuestion": "4 + 3 = ?",
+      "captchaAnswer": "7"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-4520",
+    "priorityShown": "Medium",
+    "slaShown": "1 business day",
+    "notes": "Ticket ref format matched UOB-ITSD-YYYYMMDD-####; priority and SLA matched the site's own mapping. Only console message was a benign favicon.ico 404, no JS errors."
+  },
+  {
+    "timestamp": "2026-08-31T08:05:56Z",
+    "scenario": "valid-submission-high",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Network & VPN",
+      "priority": "High",
+      "subject": "Cannot connect to corporate VPN",
+      "description": "I am unable to connect to the corporate VPN from home since this morning, blocking access to internal systems.",
+      "confirmAccurate": true,
+      "captchaQuestion": "8 + 8 = ?",
+      "captchaAnswer": "16"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-2280",
+    "priorityShown": "High",
+    "slaShown": "4 hours",
+    "notes": "Ticket ref format matched UOB-ITSD-YYYYMMDD-####; priority and SLA matched the site's own mapping. Only console message was a benign favicon.ico 404, no JS errors."
+  },
+  {
+    "timestamp": "2026-08-31T08:06:32Z",
+    "scenario": "valid-submission-critical",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Security Incident",
+      "priority": "Critical",
+      "subject": "Suspected ransomware on workstation",
+      "description": "My workstation is showing ransom note popups and files appear encrypted. I have disconnected from the network already.",
+      "confirmAccurate": true,
+      "captchaQuestion": "5 + 10 = ?",
+      "captchaAnswer": "15"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-8302",
+    "priorityShown": "Critical",
+    "slaShown": "1 hour",
+    "notes": "Ticket ref format matched UOB-ITSD-YYYYMMDD-####; priority and SLA matched the site's own mapping. Only console message was a benign favicon.ico 404, no JS errors."
+  },
+  {
+    "timestamp": "2026-08-31T08:06:50Z",
+    "scenario": "blank-required-fields",
+    "input": {
+      "fullName": "",
+      "staffId": "",
+      "email": "",
+      "department": "",
+      "category": "",
+      "priority": null,
+      "subject": "",
+      "description": "",
+      "confirmAccurate": false,
+      "captchaAnswer": ""
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "All 10 required fields (fullName, staffId, email, department, category, priority, subject, description, confirmAccurate, captchaAnswer) showed aria-invalid=true and a visible inline error message. Focus landed on the first invalid field (#fullName). Submission was blocked (success panel not shown). No unexpected JS console errors."
+  },
+  {
+    "timestamp": "2026-08-31T08:07:44Z",
+    "scenario": "credential-warning-trigger",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Account & Access",
+      "priority": "Medium",
+      "subject": "Cannot access shared drive",
+      "description": "I cannot access the shared drive, my password is hunter2 and it still fails to connect.",
+      "confirmAccurate": true,
+      "captchaQuestion": "7 + 7 = ?",
+      "captchaAnswer": "14"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Credential warning banner (#credentialWarning) appeared in real time as the description was typed ('It looks like your description may contain a password or credential...') and remained visible after clicking Submit; submission was blocked (success panel not shown). No unexpected JS console errors."
+  },
+  {
+    "timestamp": "2026-08-31T08:08:23Z",
+    "scenario": "wrong-captcha-answer",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Hardware",
+      "priority": "Low",
+      "subject": "Printer not working",
+      "description": "The office printer on the 5th floor is not responding to print jobs since yesterday afternoon.",
+      "confirmAccurate": true,
+      "captchaQuestion": "10 + 8 = ?",
+      "captchaAnswer": "99 (deliberately wrong)"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Error message 'That answer isn't correct. Try the new question below.' appeared, #captchaAnswer got aria-invalid=true, question regenerated (10 + 8 = ? -> 6 + 5 = ?) and the answer field was cleared; submission was blocked. Verified via direct browser_evaluate (not a scoped snapshot). NOTE: an earlier interactive attempt on this same scenario (via UI clicks with question '7 + 5 = ?') showed the question text and answer value apparently unchanged immediately after submit when checked with browser_evaluate; a follow-up isolated re-test using the identical evaluate-driven flow reproduced the expected regenerate+clear behavior correctly and consistently, so this is logged as pass. Flagging the one anomalous read as worth a second look if it recurs in iteration 2 -- possibly a one-off read timing artifact rather than a form defect, since the underlying validators/generateCaptcha(true) call is synchronous in the source and a same-value coincidence (1/100 chance) cannot explain the value field failing to clear in that single instance."
+  },
+  {
+    "timestamp": "2026-08-31T08:10:34Z",
+    "scenario": "bad-staffid-bad-email",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "12AB56",
+      "email": "test@gmail.com",
+      "department": "Technology",
+      "category": "Hardware",
+      "priority": "Low",
+      "subject": "Keyboard not working",
+      "description": "My keyboard has several keys that are unresponsive since this morning and it is affecting my work.",
+      "confirmAccurate": true,
+      "captchaQuestion": "1 + 5 = ?",
+      "captchaAnswer": "6"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Staff ID error 'Staff ID must be exactly 6 digits.' and email error 'Email must be a valid @uobgroup.com address.' both appeared with aria-invalid=true; submission blocked; focus landed on first invalid field (#staffId). No unexpected JS console errors."
+  }
+]
