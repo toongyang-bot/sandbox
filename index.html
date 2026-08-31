@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UOB · IT Service Desk (Training Demo)</title>
+<style>
+  /* ===== Design tokens ===== */
+  :root {
+    --primary: #00539B;
+    --primary-dark: #003D73;
+    --accent: #E8A33D;
+    --accent-dark: #C9861F;
+    --bg: #FFFFFF;
+    --bg-alt: #F4F7FA;
+    --text: #2C3038;
+    --text-light: #565C68;
+    --border: #D7DEE6;
+    --error: #B3261E;
+    --success-bg: #E6F4EA;
+    --success-border: #34A853;
+    --success-text: #1E4620;
+    --radius: 8px;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --max-width: 1120px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+  }
+
+  img, svg { max-width: 100%; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  a { color: var(--primary); }
+
+  /* Visible focus outlines for accessibility */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  summary:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 20px;
+    z-index: 1000;
+    border-radius: 0 0 8px 0;
+  }
+  .skip-link:focus {
+    left: 0;
+  }
+
+  h1, h2, h3 { line-height: 1.25; margin-top: 0; }
+
+  /* ===== Header / Sticky Nav ===== */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--primary);
+    box-shadow: var(--shadow);
+  }
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .logo {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-decoration: none;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+
+  .nav-toggle {
+    display: none;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.6);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 1.4rem;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 6px 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.15s ease;
+  }
+
+  .nav-links a:hover {
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== Hero ===== */
+  .hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    padding: 72px 24px 64px;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: 2.4rem;
+    margin-bottom: 12px;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: #E4ECF5;
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 13px 28px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #2C3038;
+  }
+  .btn-primary:hover { background: var(--accent-dark); }
+
+  .btn-secondary {
+    background: transparent;
+    color: #fff;
+    border-color: rgba(255,255,255,0.7);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+  .btn-outline:hover { background: var(--bg-alt); }
+
+  /* ===== Quick-info cards ===== */
+  .quick-info {
+    max-width: var(--max-width);
+    margin: -36px auto 64px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .info-card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    text-align: center;
+    border-top: 4px solid var(--accent);
+  }
+
+  .info-card .info-icon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+
+  .info-card h3 {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+
+  .info-card p {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  /* ===== General section layout ===== */
+  section.page-section {
+    padding: 64px 0;
+  }
+
+  section.page-section.alt {
+    background: var(--bg-alt);
+  }
+
+  .section-heading {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 40px;
+  }
+
+  .section-heading h2 {
+    font-size: 1.9rem;
+    color: var(--primary-dark);
+  }
+
+  .section-heading p {
+    color: var(--text-light);
+  }
+
+  /* ===== Ticket Form ===== */
+  .ticket-form {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .form-row {
+    margin-bottom: 22px;
+  }
+
+  .form-row label,
+  .form-row legend {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+  }
+
+  .required-mark {
+    color: var(--error);
+  }
+
+  .form-row input[type="text"],
+  .form-row input[type="email"],
+  .form-row select,
+  .form-row textarea,
+  .form-row input[type="file"] {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--text);
+    background: #fff;
+  }
+
+  .form-row input:focus,
+  .form-row select:focus,
+  .form-row textarea:focus {
+    border-color: var(--primary);
+  }
+
+  .form-row textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  .hint {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 5px;
+  }
+
+  .char-counter {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  .char-counter.limit-exceeded {
+    color: var(--error);
+    font-weight: 600;
+  }
+
+  .error-message {
+    color: var(--error);
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .error-message.visible {
+    display: block;
+  }
+
+  .form-row input[aria-invalid="true"],
+  .form-row select[aria-invalid="true"],
+  .form-row textarea[aria-invalid="true"] {
+    border-color: var(--error);
+  }
+
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .priority-options {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .priority-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+  }
+
+  .priority-note {
+    background: #FFF6E8;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    color: #6B4A0F;
+  }
+
+  .checkbox-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .checkbox-row input {
+    margin-top: 4px;
+    width: auto;
+  }
+
+  .checkbox-row label {
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+
+  .credential-warning {
+    background: #FDECEC;
+    border: 1px solid var(--error);
+    color: #7A1913;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    margin-top: 8px;
+    display: none;
+  }
+
+  .credential-warning.visible {
+    display: block;
+  }
+
+  .filename-display {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  /* ===== Success panel ===== */
+  .success-panel {
+    display: none;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+    border-radius: var(--radius);
+    padding: 32px;
+    text-align: center;
+    color: var(--success-text);
+  }
+
+  .success-panel.visible {
+    display: block;
+  }
+
+  .success-panel h3 {
+    color: var(--success-text);
+    font-size: 1.3rem;
+  }
+
+  .ticket-ref {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    background: #fff;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin: 14px 0;
+    letter-spacing: 0.5px;
+  }
+
+  .success-details {
+    text-align: left;
+    max-width: 420px;
+    margin: 16px auto 24px;
+    background: #fff;
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+
+  .success-details dt {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    margin-top: 10px;
+  }
+
+  .success-details dt:first-child { margin-top: 0; }
+
+  .success-details dd {
+    margin: 2px 0 0;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  /* ===== FAQ ===== */
+  .faq-search {
+    max-width: 480px;
+    margin: 0 auto 36px;
+  }
+
+  .faq-search input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-family: inherit;
+  }
+
+  .faq-search input:focus {
+    border-color: var(--primary);
+  }
+
+  .faq-list {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 18px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .faq-question:hover {
+    background: var(--bg-alt);
+  }
+
+  .faq-chevron {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid var(--primary);
+    border-bottom: 2px solid var(--primary);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .faq-question[aria-expanded="true"] .faq-chevron {
+    transform: rotate(-135deg);
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease, padding 0.25s ease;
+    padding: 0 22px;
+  }
+
+  .faq-answer.open {
+    max-height: 300px;
+    padding: 0 22px 20px;
+  }
+
+  .faq-answer p {
+    margin: 0;
+    color: var(--text-light);
+  }
+
+  .faq-item.hidden {
+    display: none;
+  }
+
+  .faq-empty {
+    text-align: center;
+    color: var(--text-light);
+    padding: 24px;
+    display: none;
+  }
+
+  .faq-empty.visible {
+    display: block;
+  }
+
+  /* ===== Footer ===== */
+  .site-footer {
+    background: #1A2634;
+    color: #C9D3DF;
+    padding: 48px 0 24px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  .footer-grid h4 {
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 14px;
+  }
+
+  .footer-grid ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-grid li {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+
+  .footer-grid a {
+    color: #C9D3DF;
+    text-decoration: none;
+  }
+
+  .footer-grid a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .disclaimer {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 20px;
+    font-size: 0.82rem;
+    text-align: center;
+    color: #8B97A6;
+  }
+
+  .footer-disclaimer-line {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #E8A33D;
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .nav-toggle {
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--primary-dark);
+      flex-direction: column;
+      gap: 0;
+      padding: 8px 0;
+    }
+
+    .nav-links.open {
+      display: flex;
+    }
+
+    .nav-links a {
+      padding: 14px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .hero h1 { font-size: 1.8rem; }
+
+    .quick-info {
+      grid-template-columns: 1fr;
+      margin-top: -24px;
+    }
+
+    .ticket-form { padding: 24px; }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .priority-options {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- ===== HEADER / STICKY NAV ===== -->
+<header class="site-header">
+  <nav class="nav-bar" aria-label="Primary navigation">
+    <a href="#top" class="logo">UOB &middot; IT Service Desk</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#top">Home</a></li>
+      <li><a href="#ticket-form">Submit a Ticket</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div id="top"></div>
+
+  <!-- ===== HERO BANNER ===== -->
+  <section class="hero">
+    <div class="container">
+      <h1>IT Support, When You Need It</h1>
+      <p>Log an IT issue, track its progress, and get help from the UOB Technology Service Desk &mdash; all in one place.</p>
+      <div class="hero-actions">
+        <a href="#ticket-form" class="btn btn-primary">Submit a Ticket</a>
+        <a href="#faq" class="btn btn-secondary">Browse FAQs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUICK INFO CARDS ===== -->
+  <div class="quick-info">
+    <div class="info-card">
+      <div class="info-icon" aria-hidden="true">&#9742;</div>
+      <h3>Service Desk Hotline</h3>
+      <p>1800-XXX-XXXX</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon" aria-hidden="true">&#128337;</div>
+      <h3>Operating Hours</h3>
+      <p>Mon&ndash;Fri, 8am&ndash;8pm SGT</p>
+    </div>
+    <div class="info-card">
+      <div class="info-icon" aria-hidden="true">&#9889;</div>
+      <h3>Average Response Time</h3>
+      <p>&lt; 4 hours</p>
+    </div>
+  </div>
+
+  <!-- ===== TICKET FORM SECTION ===== -->
+  <section class="page-section" id="ticket-form">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Submit an IT Support Ticket</h2>
+        <p>Please provide as much detail as possible so we can resolve your issue quickly. Never include passwords, OTPs, or card numbers in this form.</p>
+      </div>
+
+      <form class="ticket-form" id="ticketForm" novalidate>
+
+        <!-- Full Name -->
+        <div class="form-row">
+          <label for="fullName">Full Name <span class="required-mark">*</span></label>
+          <input type="text" id="fullName" name="fullName" required autocomplete="name">
+          <p class="error-message" id="err-fullName" role="alert"></p>
+        </div>
+
+        <!-- Staff ID -->
+        <div class="form-row">
+          <label for="staffId">Staff ID <span class="required-mark">*</span></label>
+          <input type="text" id="staffId" name="staffId" required pattern="\d{6}" inputmode="numeric" maxlength="6">
+          <p class="hint">6 digits, e.g. 123456</p>
+          <p class="error-message" id="err-staffId" role="alert"></p>
+        </div>
+
+        <!-- Corporate Email -->
+        <div class="form-row">
+          <label for="email">Corporate Email <span class="required-mark">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+          <p class="hint">Must end in @uobgroup.com (demo restriction)</p>
+          <p class="error-message" id="err-email" role="alert"></p>
+        </div>
+
+        <!-- Department -->
+        <div class="form-row">
+          <label for="department">Department <span class="required-mark">*</span></label>
+          <select id="department" name="department" required>
+            <option value="">Select department&hellip;</option>
+            <option>Retail Banking</option>
+            <option>Corporate Banking</option>
+            <option>Treasury</option>
+            <option>Risk &amp; Compliance</option>
+            <option>Operations</option>
+            <option>Human Resources</option>
+            <option>Technology</option>
+          </select>
+          <p class="error-message" id="err-department" role="alert"></p>
+        </div>
+
+        <!-- Issue Category -->
+        <div class="form-row">
+          <label for="category">Issue Category <span class="required-mark">*</span></label>
+          <select id="category" name="category" required>
+            <option value="">Select category&hellip;</option>
+            <option>Hardware</option>
+            <option>Software / Application</option>
+            <option>Network &amp; VPN</option>
+            <option>Email &amp; Collaboration</option>
+            <option>Account &amp; Access</option>
+            <option>Security Incident</option>
+            <option>Other</option>
+          </select>
+          <p class="error-message" id="err-category" role="alert"></p>
+        </div>
+
+        <!-- Priority -->
+        <div class="form-row">
+          <fieldset>
+            <legend>Priority <span class="required-mark">*</span></legend>
+            <div class="priority-options" role="radiogroup" aria-required="true">
+              <label class="priority-option"><input type="radio" name="priority" value="Low" required> Low</label>
+              <label class="priority-option"><input type="radio" name="priority" value="Medium" required> Medium</label>
+              <label class="priority-option"><input type="radio" name="priority" value="High" required> High</label>
+              <label class="priority-option"><input type="radio" name="priority" value="Critical" required> Critical</label>
+            </div>
+            <p class="priority-note">If your issue is <strong>Critical</strong>, please also phone it in to the Service Desk Hotline (1800-XXX-XXXX) in addition to submitting this ticket.</p>
+            <p class="error-message" id="err-priority" role="alert"></p>
+          </fieldset>
+        </div>
+
+        <!-- Subject -->
+        <div class="form-row">
+          <label for="subject">Subject <span class="required-mark">*</span></label>
+          <input type="text" id="subject" name="subject" required maxlength="100">
+          <p class="char-counter" id="count-subject">0 / 100</p>
+          <p class="error-message" id="err-subject" role="alert"></p>
+        </div>
+
+        <!-- Description -->
+        <div class="form-row">
+          <label for="description">Description <span class="required-mark">*</span></label>
+          <textarea id="description" name="description" required minlength="20"></textarea>
+          <p class="char-counter" id="count-description">0 characters (minimum 20)</p>
+          <p class="credential-warning" id="credentialWarning" role="alert">⚠ It looks like your description may contain a password or credential. Please remove it &mdash; never share passwords, OTPs, or card numbers in a support ticket.</p>
+          <p class="error-message" id="err-description" role="alert"></p>
+        </div>
+
+        <!-- Attachment -->
+        <div class="form-row">
+          <label for="attachment">Attachment</label>
+          <input type="file" id="attachment" name="attachment" accept=".png,.jpg,.jpeg,.pdf,.docx">
+          <p class="hint">Accepted formats: PNG, JPG, PDF, DOCX</p>
+          <p class="filename-display" id="filenameDisplay"></p>
+        </div>
+
+        <!-- Confirmation checkbox -->
+        <div class="form-row">
+          <div class="checkbox-row">
+            <input type="checkbox" id="confirmAccurate" name="confirmAccurate" required>
+            <label for="confirmAccurate">I confirm the information provided is accurate <span class="required-mark">*</span></label>
+          </div>
+          <p class="error-message" id="err-confirmAccurate" role="alert"></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submitBtn">Submit Ticket</button>
+
+        <!-- Success panel -->
+        <div class="success-panel" id="successPanel" role="status" aria-live="polite">
+          <h3>&#9989; Ticket Submitted Successfully</h3>
+          <p>Your ticket reference number is:</p>
+          <div class="ticket-ref" id="ticketRefDisplay"></div>
+          <dl class="success-details">
+            <dt>Priority</dt>
+            <dd id="successPriority"></dd>
+            <dt>Expected SLA Response Time</dt>
+            <dd id="successSla"></dd>
+          </dl>
+          <p><button type="button" class="btn btn-outline" id="resetFormBtn">Submit another ticket</button></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== FAQ SECTION ===== -->
+  <section class="page-section alt" id="faq">
+    <div class="container">
+      <div class="section-heading">
+        <h2>Frequently Asked Questions</h2>
+        <p>Search below or browse common questions about IT support.</p>
+      </div>
+
+      <div class="faq-search">
+        <label for="faqSearch" class="visually-hidden">Search FAQs</label>
+        <input type="text" id="faqSearch" placeholder="Search FAQs, e.g. &quot;VPN&quot; or &quot;password&quot;" aria-label="Search FAQs">
+      </div>
+
+      <div class="faq-list" id="faqList">
+        <!-- FAQ items generated by JS -->
+      </div>
+      <p class="faq-empty" id="faqEmpty">No matching FAQs. Try a different search term, or submit a ticket for further help.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#top">Home</a></li>
+          <li><a href="#ticket-form">Submit a Ticket</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Details</h4>
+        <ul>
+          <li>Hotline: 1800-XXX-XXXX</li>
+          <li>Email: itservicedesk@uobgroup.com</li>
+          <li>Hours: Mon&ndash;Fri, 8am&ndash;8pm SGT</li>
+        </ul>
+      </div>
+      <div>
+        <h4>About This Site</h4>
+        <div class="disclaimer">
+          This is a fictional IT Service Desk portal built for internal training and UI demonstration purposes only. No real tickets are processed and no data leaves your browser.
+        </div>
+      </div>
+    </div>
+    <p class="footer-disclaimer-line">Training demo &mdash; not affiliated with or endorsed by United Overseas Bank Limited</p>
+    <div class="footer-bottom">
+      &copy; 2026 UOB IT Service Desk Training Demo. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ===== Mobile nav toggle ===== */
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function () {
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A' && window.innerWidth <= 768) {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* ===== In-memory ticket store (no localStorage / network) ===== */
+  var submittedTickets = [];
+
+  /* ===== Ticket form ===== */
+  var form = document.getElementById('ticketForm');
+  var successPanel = document.getElementById('successPanel');
+  var submitBtn = document.getElementById('submitBtn');
+
+  var fields = {
+    fullName: document.getElementById('fullName'),
+    staffId: document.getElementById('staffId'),
+    email: document.getElementById('email'),
+    department: document.getElementById('department'),
+    category: document.getElementById('category'),
+    subject: document.getElementById('subject'),
+    description: document.getElementById('description'),
+    confirmAccurate: document.getElementById('confirmAccurate')
+  };
+
+  var STAFF_ID_PATTERN = /^\d{6}$/;
+  var CORP_EMAIL_PATTERN = /^[^\s@]+@uobgroup\.com$/i;
+  // Simple heuristic to catch obvious credential-like text (password: xxx, pwd=xxx, otp 123456)
+  var CREDENTIAL_PATTERN = /\b(password|passwd|pwd|otp|pin\s*code|pin\b)\s*[:=]?\s*\S+/i;
+
+  function showError(fieldKey, message) {
+    var el = fields[fieldKey];
+    var errEl = document.getElementById('err-' + fieldKey);
+    if (message) {
+      errEl.textContent = message;
+      errEl.classList.add('visible');
+      el.setAttribute('aria-invalid', 'true');
+      return false;
+    } else {
+      errEl.textContent = '';
+      errEl.classList.remove('visible');
+      el.removeAttribute('aria-invalid');
+      return true;
+    }
+  }
+
+  function validateFullName() {
+    var v = fields.fullName.value.trim();
+    if (!v) return showError('fullName', 'Please enter your full name.');
+    return showError('fullName', '');
+  }
+
+  function validateStaffId() {
+    var v = fields.staffId.value.trim();
+    if (!v) return showError('staffId', 'Please enter your Staff ID.');
+    if (!STAFF_ID_PATTERN.test(v)) return showError('staffId', 'Staff ID must be exactly 6 digits.');
+    return showError('staffId', '');
+  }
+
+  function validateEmail() {
+    var v = fields.email.value.trim();
+    if (!v) return showError('email', 'Please enter your corporate email.');
+    if (!CORP_EMAIL_PATTERN.test(v)) return showError('email', 'Email must be a valid @uobgroup.com address.');
+    return showError('email', '');
+  }
+
+  function validateDepartment() {
+    if (!fields.department.value) return showError('department', 'Please select your department.');
+    return showError('department', '');
+  }
+
+  function validateCategory() {
+    if (!fields.category.value) return showError('category', 'Please select an issue category.');
+    return showError('category', '');
+  }
+
+  function getPriorityValue() {
+    var checked = form.querySelector('input[name="priority"]:checked');
+    return checked ? checked.value : '';
+  }
+
+  function validatePriority() {
+    var el = document.getElementById('err-priority');
+    if (!getPriorityValue()) {
+      el.textContent = 'Please select a priority level.';
+      el.classList.add('visible');
+      return false;
+    }
+    el.textContent = '';
+    el.classList.remove('visible');
+    return true;
+  }
+
+  function validateSubject() {
+    var v = fields.subject.value.trim();
+    if (!v) return showError('subject', 'Please enter a subject.');
+    if (v.length > 100) return showError('subject', 'Subject must be 100 characters or fewer.');
+    return showError('subject', '');
+  }
+
+  var credentialWarning = document.getElementById('credentialWarning');
+
+  function checkCredentialWarning() {
+    var v = fields.description.value;
+    var found = CREDENTIAL_PATTERN.test(v);
+    credentialWarning.classList.toggle('visible', found);
+    return found;
+  }
+
+  function validateDescription() {
+    var v = fields.description.value.trim();
+    if (!v) return showError('description', 'Please describe your issue.');
+    if (v.length < 20) return showError('description', 'Description must be at least 20 characters.');
+    if (checkCredentialWarning()) return showError('description', 'Please remove any password or credential information before submitting.');
+    return showError('description', '');
+  }
+
+  function validateConfirm() {
+    if (!fields.confirmAccurate.checked) return showError('confirmAccurate', 'You must confirm the information is accurate.');
+    return showError('confirmAccurate', '');
+  }
+
+  fields.fullName.addEventListener('blur', validateFullName);
+  fields.staffId.addEventListener('blur', validateStaffId);
+  fields.email.addEventListener('blur', validateEmail);
+  fields.department.addEventListener('blur', validateDepartment);
+  fields.category.addEventListener('blur', validateCategory);
+  fields.subject.addEventListener('blur', validateSubject);
+  fields.description.addEventListener('blur', validateDescription);
+  fields.confirmAccurate.addEventListener('blur', validateConfirm);
+  form.querySelectorAll('input[name="priority"]').forEach(function (r) {
+    r.addEventListener('change', validatePriority);
+  });
+
+  /* Live character counters */
+  var subjectCounter = document.getElementById('count-subject');
+  fields.subject.addEventListener('input', function () {
+    var len = fields.subject.value.length;
+    subjectCounter.textContent = len + ' / 100';
+    subjectCounter.classList.toggle('limit-exceeded', len > 100);
+  });
+
+  var descCounter = document.getElementById('count-description');
+  fields.description.addEventListener('input', function () {
+    var len = fields.description.value.length;
+    descCounter.textContent = len + ' characters (minimum 20)';
+    descCounter.classList.toggle('limit-exceeded', len > 0 && len < 20);
+    checkCredentialWarning();
+  });
+
+  /* File attachment: display filename only */
+  var attachmentInput = document.getElementById('attachment');
+  var filenameDisplay = document.getElementById('filenameDisplay');
+  attachmentInput.addEventListener('change', function () {
+    if (attachmentInput.files && attachmentInput.files.length > 0) {
+      filenameDisplay.textContent = 'Selected file: ' + attachmentInput.files[0].name;
+    } else {
+      filenameDisplay.textContent = '';
+    }
+  });
+
+  var SLA_MAP = {
+    Critical: '1 hour',
+    High: '4 hours',
+    Medium: '1 business day',
+    Low: '3 business days'
+  };
+
+  function generateTicketRef() {
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = String(now.getMonth() + 1).padStart(2, '0');
+    var d = String(now.getDate()).padStart(2, '0');
+    var rand = String(Math.floor(1000 + Math.random() * 9000));
+    return 'UOB-ITSD-' + y + m + d + '-' + rand;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var validators = [
+      validateFullName, validateStaffId, validateEmail, validateDepartment,
+      validateCategory, validatePriority, validateSubject, validateDescription, validateConfirm
+    ];
+
+    var allValid = true;
+    var firstInvalidEl = null;
+
+    validators.forEach(function (fn) {
+      var ok = fn();
+      if (!ok && !firstInvalidEl) {
+        if (fn === validatePriority) {
+          firstInvalidEl = form.querySelector('input[name="priority"]');
+        } else if (fn === validateFullName) firstInvalidEl = fields.fullName;
+        else if (fn === validateStaffId) firstInvalidEl = fields.staffId;
+        else if (fn === validateEmail) firstInvalidEl = fields.email;
+        else if (fn === validateDepartment) firstInvalidEl = fields.department;
+        else if (fn === validateCategory) firstInvalidEl = fields.category;
+        else if (fn === validateSubject) firstInvalidEl = fields.subject;
+        else if (fn === validateDescription) firstInvalidEl = fields.description;
+        else if (fn === validateConfirm) firstInvalidEl = fields.confirmAccurate;
+      }
+      if (!ok) allValid = false;
+    });
+
+    if (!allValid) {
+      if (firstInvalidEl) firstInvalidEl.focus();
+      return;
+    }
+
+    var priority = getPriorityValue();
+    var ticketRef = generateTicketRef();
+
+    var ticketRecord = {
+      ref: ticketRef,
+      fullName: fields.fullName.value.trim(),
+      staffId: fields.staffId.value.trim(),
+      email: fields.email.value.trim(),
+      department: fields.department.value,
+      category: fields.category.value,
+      priority: priority,
+      subject: fields.subject.value.trim(),
+      description: fields.description.value.trim(),
+      attachmentName: attachmentInput.files.length ? attachmentInput.files[0].name : null,
+      submittedAt: new Date().toISOString()
+    };
+    submittedTickets.push(ticketRecord);
+
+    document.getElementById('ticketRefDisplay').textContent = ticketRef;
+    document.getElementById('successPriority').textContent = priority;
+    document.getElementById('successSla').textContent = SLA_MAP[priority];
+
+    form.querySelectorAll('.form-row, fieldset, button[type="submit"]').forEach(function (el) {
+      if (!successPanel.contains(el)) el.style.display = 'none';
+    });
+    successPanel.classList.add('visible');
+    successPanel.focus();
+  });
+
+  document.getElementById('resetFormBtn').addEventListener('click', function () {
+    form.reset();
+    subjectCounter.textContent = '0 / 100';
+    subjectCounter.classList.remove('limit-exceeded');
+    descCounter.textContent = '0 characters (minimum 20)';
+    descCounter.classList.remove('limit-exceeded');
+    credentialWarning.classList.remove('visible');
+    filenameDisplay.textContent = '';
+    Object.keys(fields).forEach(function (key) { showError(key, ''); });
+    document.getElementById('err-priority').textContent = '';
+    document.getElementById('err-priority').classList.remove('visible');
+
+    form.querySelectorAll('.form-row, fieldset, button[type="submit"]').forEach(function (el) {
+      el.style.display = '';
+    });
+    successPanel.classList.remove('visible');
+    fields.fullName.focus();
+  });
+
+  /* ===== FAQ accordion + search ===== */
+  var faqData = [
+    {
+      q: 'How do I reset my network password?',
+      a: 'Go to the corporate self-service portal at password.uobgroup.com and follow the prompts to verify your identity and set a new password. If you are locked out or the portal is unavailable, call the Service Desk Hotline and a technician will verify your identity before resetting it manually.'
+    },
+    {
+      q: 'How long will my ticket take to be resolved?',
+      a: 'Resolution time depends on the priority you select when submitting your ticket: Critical issues are responded to within 1 hour, High within 4 hours, Medium within 1 business day, and Low within 3 business days. You will receive updates by email as your ticket progresses.'
+    },
+    {
+      q: 'How do I connect to the corporate VPN from home?',
+      a: 'Install the approved VPN client from the Software Centre on your company laptop, then sign in with your corporate credentials and multi-factor authentication code. If the client fails to connect, check that you are on a stable internet connection and restart the client before logging a ticket.'
+    },
+    {
+      q: 'My laptop won’t boot — what should I do?',
+      a: 'First, hold the power button for 10 seconds to force a shutdown, then power it on again. If it still does not boot, try connecting it to power and waiting a few minutes in case the battery is depleted. If the issue persists, submit a Hardware ticket marked High priority and bring the device to the nearest IT counter if possible.'
+    },
+    {
+      q: 'How do I request new software to be installed?',
+      a: 'Submit a ticket under the Software / Application category, specifying the exact software name, version, and business justification. Most standard applications in the approved catalogue are auto-approved and installed within 1 business day; non-standard requests may require manager and security approval.'
+    },
+    {
+      q: 'I received a suspicious email — what now?',
+      a: 'Do not click any links or open attachments. Use the "Report Phishing" button in your email client if available, or forward the email as an attachment to the Service Desk and submit a Security Incident ticket marked High or Critical priority. Never reply with or enter your password on a linked page.'
+    },
+    {
+      q: 'How do I get access to a shared drive or application?',
+      a: 'Submit a ticket under the Account & Access category, naming the specific drive or application and your business reason for needing it. Access requests typically require approval from your department head or the relevant system owner before they are granted.'
+    },
+    {
+      q: 'How do I track or update an existing ticket?',
+      a: 'Your ticket reference number (format UOB-ITSD-YYYYMMDD-####) is provided immediately after submission and also sent to your corporate email. Reply to that email thread to add updates, or call the hotline and quote your reference number to speak with a technician.'
+    }
+  ];
+
+  var faqList = document.getElementById('faqList');
+  var faqEmpty = document.getElementById('faqEmpty');
+
+  faqData.forEach(function (item, idx) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'faq-item';
+    wrapper.setAttribute('data-question', item.q.toLowerCase());
+    wrapper.setAttribute('data-answer', item.a.toLowerCase());
+
+    var btnId = 'faq-q-' + idx;
+    var panelId = 'faq-a-' + idx;
+
+    wrapper.innerHTML =
+      '<h3 style="margin:0;">' +
+      '<button type="button" class="faq-question" id="' + btnId + '" aria-expanded="false" aria-controls="' + panelId + '">' +
+      '<span>' + item.q + '</span>' +
+      '<span class="faq-chevron" aria-hidden="true"></span>' +
+      '</button></h3>' +
+      '<div class="faq-answer" id="' + panelId + '" role="region" aria-labelledby="' + btnId + '">' +
+      '<p>' + item.a + '</p></div>';
+
+    faqList.appendChild(wrapper);
+  });
+
+  faqList.addEventListener('click', function (e) {
+    var btn = e.target.closest('.faq-question');
+    if (!btn) return;
+    var panel = document.getElementById(btn.getAttribute('aria-controls'));
+    var isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+    // Close all other items (accordion behaviour: one open at a time)
+    faqList.querySelectorAll('.faq-question').forEach(function (otherBtn) {
+      if (otherBtn !== btn) {
+        otherBtn.setAttribute('aria-expanded', 'false');
+        document.getElementById(otherBtn.getAttribute('aria-controls')).classList.remove('open');
+      }
+    });
+
+    btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    panel.classList.toggle('open', !isOpen);
+  });
+
+  var faqSearch = document.getElementById('faqSearch');
+  faqSearch.addEventListener('input', function () {
+    var term = faqSearch.value.trim().toLowerCase();
+    var visibleCount = 0;
+    faqList.querySelectorAll('.faq-item').forEach(function (item) {
+      var matches = !term ||
+        item.getAttribute('data-question').indexOf(term) !== -1 ||
+        item.getAttribute('data-answer').indexOf(term) !== -1;
+      item.classList.toggle('hidden', !matches);
+      if (matches) visibleCount++;
+    });
+    faqEmpty.classList.toggle('visible', visibleCount === 0);
+  });
+
+})();
+</script>
+</body>
+</html>
