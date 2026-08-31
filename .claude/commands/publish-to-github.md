@@ -1,5 +1,5 @@
 ---
-description: Security-scan the project, push it to a GitHub repo, write/update the README, stand up GitHub Pages via Actions, and update the repo's About section with the Pages link.
+description: Security-scan the project, push it to a GitHub repo, capture a screenshot and add it to the README, stand up GitHub Pages via Actions, and update the repo's About section with the Pages link.
 argument-hint: [owner/repo or full github.com URL] [optional: branch]
 ---
 
@@ -38,7 +38,31 @@ Before touching the network or GitHub in any way:
   scan is clean or the user explicitly confirms the flagged items are safe to
   publish.
 
-## Step 2 — Push the code to GitHub
+## Step 2 — Capture a screenshot for the README
+
+- Use the project's Playwright MCP tools (from `.mcp.json`) to render the page and
+  capture a screenshot:
+  - If the Playwright MCP server isn't showing up as available tools yet, check
+    `ListMcpResourcesTool` / search for `browser_` tools; if it truly isn't
+    connected in this session, ask the user to approve the project's `playwright`
+    MCP server (first-use prompt), then retry — don't silently skip this step.
+  - Navigate to the project's main entry point. For a static single-file site like
+    this repo's `index.html`, use the local `file://<absolute path>` URL so this
+    works even before anything is pushed or Pages is live. For a project with a
+    dev server, start it first and navigate to its local URL instead.
+  - Set a reasonable desktop viewport (e.g. 1280×800) and take a full-page
+    screenshot.
+  - Save it into the repo at `docs/screenshot.png` (create the `docs/` folder if
+    needed).
+- Treat the screenshot like any other file about to be committed: a quick visual
+  sanity check that it doesn't show anything that shouldn't be public (this repo's
+  pages are static demo content, so this is normally a non-issue, but don't skip
+  the check on other projects this command might later be used for).
+- If Playwright truly cannot be used in this session (server unavailable and the
+  user can't approve it right now), skip the screenshot, say so explicitly in the
+  wrap-up, and leave the README's image step out rather than inventing a fake one.
+
+## Step 3 — Push the code to GitHub
 
 - Resolve `$1` to `owner/repo`. If the repo doesn't exist yet, create it (ask the
   user whether it should be public or private if that isn't already obvious from
@@ -50,16 +74,18 @@ Before touching the network or GitHub in any way:
   history without explicit permission, never skip hooks, and confirm with the user
   before anything destructive.
 
-## Step 3 — Create/update the README
+## Step 4 — Create/update the README
 
 - Write or update `README.md` at the repo root so it actually describes this
   project: what it is, how to open/run it, and any notable constraints (e.g. "static
   single-file demo, no build step, open index.html directly" if that's what this
   project is).
+- If Step 2 produced `docs/screenshot.png`, embed it near the top of the README
+  (right under the title/summary) with `![<short alt text>](docs/screenshot.png)`.
 - Keep it accurate to what's actually in the repo — don't invent features. Commit
-  and push this alongside or right after Step 2.
+  and push this alongside or right after Step 3.
 
-## Step 4 — Set up GitHub Pages via a GitHub Actions workflow
+## Step 5 — Set up GitHub Pages via a GitHub Actions workflow
 
 - Add `.github/workflows/pages.yml` using the standard GitHub-provided pattern for
   deploying a static site via Actions (not "deploy from a branch"):
@@ -80,10 +106,10 @@ Before touching the network or GitHub in any way:
   policies block Actions from touching Pages settings), fall back to giving the
   user the manual steps: repo → Settings → Pages → Source → "GitHub Actions".
 
-## Step 5 — Update the repo's About section
+## Step 6 — Update the repo's About section
 
 - Set the repo description and the "Website" field to the GitHub Pages URL from
-  Step 4 (and add relevant topics if it's obviously useful, e.g. `demo`,
+  Step 5 (and add relevant topics if it's obviously useful, e.g. `demo`,
   `static-site`).
 - Search available tools for a repository-metadata-update capability (repo
   description/homepage/topics). If one exists, use it. If none is available in
@@ -93,7 +119,8 @@ Before touching the network or GitHub in any way:
 
 ## Wrap-up
 
-Report back concisely: what was pushed, the README status, whether the security
-scan flagged anything (and how it was resolved), the Pages workflow file added, the
-live Pages URL once available, and whether the About section was updated
-automatically or needs the manual step.
+Report back concisely: what was pushed, whether the screenshot was captured (and
+where it landed if not — Playwright unavailable, etc.), the README status, whether
+the security scan flagged anything (and how it was resolved), the Pages workflow
+file added, the live Pages URL once available, and whether the About section was
+updated automatically or needs the manual step.
