@@ -184,22 +184,46 @@
   }
 
   /* ===== Hero ===== */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal-item {
+      opacity: 0;
+      animation: reveal-up 0.6s ease forwards;
+    }
+    .reveal-item:nth-child(1) { animation-delay: 0.05s; }
+    .reveal-item:nth-child(2) { animation-delay: 0.18s; }
+    .reveal-item:nth-child(3) { animation-delay: 0.31s; }
+    .hero-stats .stat-card:nth-child(1) { animation-delay: 0.3s; }
+    .hero-stats .stat-card:nth-child(2) { animation-delay: 0.42s; }
+    .hero-stats .stat-card:nth-child(3) { animation-delay: 0.54s; }
+  }
+
   .hero {
     background: linear-gradient(135deg, var(--primary-dark) 0%, var(--ink) 100%);
     color: #fff;
-    padding: 72px 24px 64px;
+    padding: 72px 24px;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
     text-align: center;
   }
 
-  .hero h1 {
+  .hero-copy h1 {
     font-size: 2.4rem;
     margin-bottom: 12px;
   }
 
-  .hero p {
+  .hero-copy p {
     font-size: 1.1rem;
     color: #CBD5E1;
-    max-width: 640px;
+    max-width: 480px;
     margin: 0 auto 32px;
   }
 
@@ -208,6 +232,66 @@
     gap: 16px;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .stat-card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+    border-left: 4px solid var(--accent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .stat-card:hover,
+  .stat-card:focus-within {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .stat-icon {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--bg-alt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+    margin-bottom: 2px;
+  }
+
+  .stat-value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  @media (min-width: 900px) {
+    .hero-grid {
+      grid-template-columns: 1.15fr 1fr;
+      text-align: left;
+    }
+    .hero-copy p { margin-left: 0; }
+    .hero-actions { justify-content: flex-start; }
   }
 
   .btn {
@@ -244,47 +328,6 @@
   }
   .btn-outline:hover { background: var(--bg-alt); }
 
-  /* ===== Quick-info cards ===== */
-  .quick-info {
-    max-width: var(--max-width);
-    margin: -36px auto 64px;
-    padding: 0 24px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .info-card {
-    background: #fff;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 24px;
-    text-align: center;
-    border-top: 4px solid var(--accent);
-  }
-
-  .info-card .info-icon {
-    font-size: 1.6rem;
-    margin-bottom: 8px;
-  }
-
-  .info-card h3 {
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-light);
-    margin-bottom: 6px;
-  }
-
-  .info-card p {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin: 0;
-  }
-
   /* ===== General section layout ===== */
   section.page-section {
     padding: 64px 0;
@@ -309,6 +352,20 @@
     color: var(--text-light);
   }
 
+  /* Scroll-reveal: fade+rise the ticket form and FAQ list into place as the
+     user scrolls to them — one moment per section, not per-field/per-card. */
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .scroll-reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* ===== Ticket Form ===== */
   .ticket-form {
     background: #fff;
@@ -318,6 +375,12 @@
     padding: 40px;
     max-width: 780px;
     margin: 0 auto;
+  }
+
+  .form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
   }
 
   .form-row {
@@ -739,11 +802,10 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    .hero h1 { font-size: 1.8rem; }
+    .hero-copy h1 { font-size: 1.8rem; }
 
-    .quick-info {
+    .form-grid-2 {
       grid-template-columns: 1fr;
-      margin-top: -24px;
     }
 
     .ticket-form { padding: 24px; }
@@ -784,36 +846,42 @@
 <main id="main-content">
   <div id="top"></div>
 
-  <!-- ===== HERO BANNER ===== -->
+  <!-- ===== HERO BANNER (two-column: copy + stat panel) ===== -->
   <section class="hero">
-    <div class="container">
-      <h1>IT Support, When You Need It</h1>
-      <p>Log an IT issue, track its progress, and get help from the UOB Technology Service Desk in Singapore &mdash; all in one place.</p>
-      <div class="hero-actions">
-        <a href="#ticket-form" class="btn btn-primary">Submit a Ticket</a>
-        <a href="#faq" class="btn btn-secondary">Browse FAQs</a>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1 class="reveal-item">IT Support, When You Need It</h1>
+        <p class="reveal-item">Log an IT issue, track its progress, and get help from the UOB Technology Service Desk in Singapore &mdash; all in one place.</p>
+        <div class="hero-actions reveal-item">
+          <a href="#ticket-form" class="btn btn-primary">Submit a Ticket</a>
+          <a href="#faq" class="btn btn-secondary">Browse FAQs</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card reveal-item">
+          <span class="stat-icon" aria-hidden="true">&#9742;</span>
+          <div>
+            <div class="stat-label">Service Desk Hotline</div>
+            <div class="stat-value">1800-XXX-XXXX</div>
+          </div>
+        </div>
+        <div class="stat-card reveal-item">
+          <span class="stat-icon" aria-hidden="true">&#128337;</span>
+          <div>
+            <div class="stat-label">Operating Hours (SGT)</div>
+            <div class="stat-value">Mon&ndash;Fri, 8am&ndash;8pm</div>
+          </div>
+        </div>
+        <div class="stat-card reveal-item">
+          <span class="stat-icon" aria-hidden="true">&#9889;</span>
+          <div>
+            <div class="stat-label">Average Response Time</div>
+            <div class="stat-value">&lt; 4 hours</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-
-  <!-- ===== QUICK INFO CARDS ===== -->
-  <div class="quick-info">
-    <div class="info-card">
-      <div class="info-icon" aria-hidden="true">&#9742;</div>
-      <h3>Service Desk Hotline</h3>
-      <p>1800-XXX-XXXX</p>
-    </div>
-    <div class="info-card">
-      <div class="info-icon" aria-hidden="true">&#128337;</div>
-      <h3>Operating Hours (SGT)</h3>
-      <p>Mon&ndash;Fri, 8am&ndash;8pm</p>
-    </div>
-    <div class="info-card">
-      <div class="info-icon" aria-hidden="true">&#9889;</div>
-      <h3>Average Response Time</h3>
-      <p>&lt; 4 hours</p>
-    </div>
-  </div>
 
   <!-- ===== TICKET FORM SECTION ===== -->
   <section class="page-section" id="ticket-form">
@@ -823,45 +891,49 @@
         <p>Please provide as much detail as possible so we can resolve your issue quickly. Never include passwords, OTPs, or card numbers in this form.</p>
       </div>
 
-      <form class="ticket-form" id="ticketForm" novalidate>
+      <form class="ticket-form scroll-reveal" id="ticketForm" novalidate>
 
-        <!-- Full Name -->
-        <div class="form-row">
-          <label for="fullName">Full Name <span class="required-mark">*</span></label>
-          <input type="text" id="fullName" name="fullName" required autocomplete="name">
-          <p class="error-message" id="err-fullName" role="alert"></p>
+        <div class="form-grid-2">
+          <!-- Full Name -->
+          <div class="form-row">
+            <label for="fullName">Full Name <span class="required-mark">*</span></label>
+            <input type="text" id="fullName" name="fullName" required autocomplete="name">
+            <p class="error-message" id="err-fullName" role="alert"></p>
+          </div>
+
+          <!-- Staff ID -->
+          <div class="form-row">
+            <label for="staffId">Staff ID <span class="required-mark">*</span></label>
+            <input type="text" id="staffId" name="staffId" required pattern="\d{6}" inputmode="numeric" maxlength="6">
+            <p class="hint">6 digits, e.g. 123456</p>
+            <p class="error-message" id="err-staffId" role="alert"></p>
+          </div>
         </div>
 
-        <!-- Staff ID -->
-        <div class="form-row">
-          <label for="staffId">Staff ID <span class="required-mark">*</span></label>
-          <input type="text" id="staffId" name="staffId" required pattern="\d{6}" inputmode="numeric" maxlength="6">
-          <p class="hint">6 digits, e.g. 123456</p>
-          <p class="error-message" id="err-staffId" role="alert"></p>
-        </div>
+        <div class="form-grid-2">
+          <!-- Corporate Email -->
+          <div class="form-row">
+            <label for="email">Corporate Email <span class="required-mark">*</span></label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+            <p class="hint">Must end in @uobgroup.com (demo restriction)</p>
+            <p class="error-message" id="err-email" role="alert"></p>
+          </div>
 
-        <!-- Corporate Email -->
-        <div class="form-row">
-          <label for="email">Corporate Email <span class="required-mark">*</span></label>
-          <input type="email" id="email" name="email" required autocomplete="email">
-          <p class="hint">Must end in @uobgroup.com (demo restriction)</p>
-          <p class="error-message" id="err-email" role="alert"></p>
-        </div>
-
-        <!-- Department -->
-        <div class="form-row">
-          <label for="department">Department <span class="required-mark">*</span></label>
-          <select id="department" name="department" required>
-            <option value="">Select department&hellip;</option>
-            <option>Retail Banking</option>
-            <option>Corporate Banking</option>
-            <option>Treasury</option>
-            <option>Risk &amp; Compliance</option>
-            <option>Operations</option>
-            <option>Human Resources</option>
-            <option>Technology</option>
-          </select>
-          <p class="error-message" id="err-department" role="alert"></p>
+          <!-- Department -->
+          <div class="form-row">
+            <label for="department">Department <span class="required-mark">*</span></label>
+            <select id="department" name="department" required>
+              <option value="">Select department&hellip;</option>
+              <option>Retail Banking</option>
+              <option>Corporate Banking</option>
+              <option>Treasury</option>
+              <option>Risk &amp; Compliance</option>
+              <option>Operations</option>
+              <option>Human Resources</option>
+              <option>Technology</option>
+            </select>
+            <p class="error-message" id="err-department" role="alert"></p>
+          </div>
         </div>
 
         <!-- Issue Category -->
@@ -981,7 +1053,7 @@
         <input type="text" id="faqSearch" placeholder="Search FAQs, e.g. &quot;VPN&quot; or &quot;password&quot;" aria-label="Search FAQs">
       </div>
 
-      <div class="faq-list" id="faqList">
+      <div class="faq-list scroll-reveal" id="faqList">
         <!-- FAQ items generated by JS -->
       </div>
       <p class="faq-empty" id="faqEmpty">No matching FAQs. Try a different search term, or submit a ticket for further help.</p>
@@ -1041,6 +1113,26 @@
       navToggle.setAttribute('aria-expanded', 'false');
     }
   });
+
+  /* ===== Scroll-reveal (ticket form + FAQ list) ===== */
+  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.scroll-reveal').forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  } else {
+    document.querySelectorAll('.scroll-reveal').forEach(function (el) {
+      el.classList.add('in-view');
+    });
+  }
 
   /* ===== In-memory ticket store (no localStorage / network) ===== */
   var submittedTickets = [];
