@@ -1,0 +1,85 @@
+[
+  {
+    "timestamp": "2026-08-31T07:37:32Z",
+    "scenario": "valid-submission-critical",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Network & VPN",
+      "priority": "Critical",
+      "subject": "VPN connectivity issue from home",
+      "description": "Unable to connect to the corporate VPN from home network since this morning. Client shows a timeout error.",
+      "captchaAnswer": "correct"
+    },
+    "result": "pass",
+    "ticketRef": "UOB-ITSD-20260831-9808",
+    "priorityShown": "Critical",
+    "slaShown": "1 hour",
+    "notes": "Success panel rendered with correct ticket ref format, priority, and SLA."
+  },
+  {
+    "timestamp": "2026-08-31T07:37:52Z",
+    "scenario": "blank-required-fields",
+    "input": {},
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "All required fields showed inline errors and aria-invalid=true; focus moved to Full Name (first invalid field)."
+  },
+  {
+    "timestamp": "2026-08-31T07:39:56Z",
+    "scenario": "credential-warning-blocked",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Account & Access",
+      "priority": "Medium",
+      "subject": "Cannot log into shared drive",
+      "description": "I cannot access the shared drive, my password is Summer2026! and it still fails.",
+      "captchaAnswer": "correct"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Credential-warning banner appeared and submission was blocked with 'Please remove any password or credential information before submitting.' No ticket was created."
+  },
+  {
+    "timestamp": "2026-08-31T07:42:55Z",
+    "scenario": "wrong-captcha-answer",
+    "input": {
+      "fullName": "Test User",
+      "staffId": "123456",
+      "email": "test.user@uobgroup.com",
+      "department": "Technology",
+      "category": "Hardware",
+      "priority": "High",
+      "subject": "Laptop will not boot",
+      "description": "Laptop shows a black screen on power up and does not respond to any key presses.",
+      "captchaAnswer": "42 (deliberately wrong; correct answer was 8)"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Blocked with 'That answer isn't correct.' A follow-up regression check (via direct DOM inspection, not just the accessibility snapshot) confirmed the security question and answer field do regenerate/clear after a failed attempt as designed; an initial scoped-snapshot read during testing looked stale and was a test-tooling artifact, not a site bug."
+  },
+  {
+    "timestamp": "2026-08-31T07:45:51Z",
+    "scenario": "bad-staffid-and-email-format",
+    "input": {
+      "staffId": "12AB56",
+      "email": "test@gmail.com"
+    },
+    "result": "pass",
+    "ticketRef": null,
+    "priorityShown": null,
+    "slaShown": null,
+    "notes": "Staff ID error: 'Staff ID must be exactly 6 digits.' Email error: 'Email must be a valid @uobgroup.com address.'"
+  }
+]
